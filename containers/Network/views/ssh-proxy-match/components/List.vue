@@ -52,7 +52,7 @@ export default {
                 throw e
               }
             }
-            return vpcIdMap
+            return { data: vpcIdMap }
           },
           network: async (listData, params) => {
             const networkIds = listData.data.filter((row) => { return row.match_scope === 'network' }).map((row) => { return row.match_value })
@@ -65,7 +65,7 @@ export default {
                 throw e
               }
             }
-            return {}
+            return { data: networkIdMap }
           },
         },
       }),
