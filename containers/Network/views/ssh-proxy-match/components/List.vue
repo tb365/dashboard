@@ -42,11 +42,13 @@ export default {
         },
         extraDataFecther: {
           vpcs: async (listData, params) => {
-            const vpcIds = listData.filter((row) => { if (row.match_scope === 'vpc') { return row.match_value } })
+            const vpcIds = listData.data.filter((row) => { return row.match_scope === 'vpc' }).map((row) => { return row.match_value })
             if (vpcIds.length > 0) {
               try {
                 const { data: { data = [] } } = await new this.$Manager('vpcs').list({ params: { 'filter.0': `id.in(${vpcIds.join(',')})` } })
-                data.map((row) => { row.vpc = row.name })
+                const vpcIdMap = {}
+                data.map((row) => { vpcIdMap[row.id] = row.name })
+                listData.data.filter((row) => { if (row.match_scope === 'vpc') { row.vpc = vpcIdMap[row.match_value] } })
               } catch (e) {
                 throw e
               }
@@ -54,11 +56,13 @@ export default {
             return {}
           },
           networks: async (listData, params) => {
-            const networkIds = listData.filter((row) => { if (row.match_scope === 'network') { return row.match_value } })
+            const networkIds = listData.data.filter((row) => { return row.match_scope === 'network' }).map((row) => { return row.match_value })
             if (networkIds.length > 0) {
               try {
                 const { data: { data = [] } } = await new this.$Manager('networks').list({ params: { 'filter.0': `id.in(${networkIds.join(',')})` } })
-                data.map((row) => { row.network = row.name })
+                const networkIdMap = {}
+                data.map((row) => { networkIdMap[row.id] = row.name })
+                listData.data.filter((row) => { if (row.match_scope === 'network') { row.network = networkIdMap[row.match_value] } })
               } catch (e) {
                 throw e
               }
