@@ -22,7 +22,7 @@
             :loading="loading">
           <template v-for="option of options">
             <a-select-option :key="option.id" :value="option.id">
-              <span class="text-color-secondary option-prefix">{{ $t(`dictionary.${select.scope}`) }}: </span>{{ option.name }}
+              {{ optionLabelFormatter(option) }}
             </a-select-option>
           </template>
         </a-select>
@@ -93,10 +93,19 @@ export default {
       this.select.id = v
       this.$emit('change', this.select)
     },
+    optionLabelFormatter (item) {
+      if (this.scopeLevel === 2) {
+        return [<span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.select.scope}`) }: </span>, item.name]
+      } else if (this.scopeLevel === 1) {
+        return [<span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.select.scope}`) }: </span>, item.name]
+      } else {
+        return [<span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.select.scope}`) }: </span>, item.name]
+      }
+    },
     async _fetchOptions (params) {
       if (this.showSelect && this.manager) {
         const { data: { data } } = await this.manager.list({ params: params })
-        return data.map((item) => { return { id: item.id, name: item.name } })
+        return data.map((item) => { return { id: item.id, name: item.name, label: item.name } })
       }
       return []
     },
