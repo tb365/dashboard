@@ -21,8 +21,8 @@
             :filterOption="false"
             :loading="loading">
           <template v-for="option of options">
-            <a-select-option :key="option.id" :value="option.id">
-              {{ optionLabelFormatter(option) }}
+            <a-select-option :key="option.id" :value="option.id" :label="option.label">
+              <scope-option :scope="this.scope" :option="option" />
             </a-select-option>
           </template>
         </a-select>
@@ -34,8 +34,34 @@
 <script>
 import _ from 'lodash'
 
+export const ScopeOption = {
+  name: 'ScopeSelectOption',
+  props: {
+    scope: {
+      type: String,
+      required: true,
+    },
+    option: {
+      type: Object,
+      required: true,
+    },
+  },
+  render (createElement, context) {
+    if (this.scope === 'system') {
+      return <div><span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.select.scope}`) }: </span>{ this.option.name + '==system==' }</div>
+    } else if (this.scope === 'domain') {
+      return <div><span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.select.scope}`) }: </span>{ this.option.name + '==domain==' }</div>
+    } else {
+      return <div><span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.select.scope}`) }: </span>{ this.option.name + '==project==' }</div>
+    }
+  },
+}
+
 export default {
   name: 'ScopeSelect',
+  components: {
+    ScopeOption,
+  },
   props: {
     value: {
       type: Object,
@@ -92,15 +118,6 @@ export default {
     handleSelectChange (v) {
       this.select.id = v
       this.$emit('change', this.select)
-    },
-    optionLabelFormatter (item) {
-      if (this.scopeLevel === 2) {
-        return <div><span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.select.scope}`) }: </span>{ item.name + '==system==' }</div>
-      } else if (this.scopeLevel === 1) {
-        return <div><span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.select.scope}`) }: </span>{ item.name + '==domain==' }</div>
-      } else {
-        return <div><span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.select.scope}`) }: </span>{ item.name + '==project==' }</div>
-      }
     },
     async _fetchOptions (params) {
       if (this.showSelect && this.manager) {
