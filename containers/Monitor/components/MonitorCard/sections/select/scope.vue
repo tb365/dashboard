@@ -52,7 +52,7 @@ export const ScopeOption = {
     } else if (this.scope === 'domain') {
       return <div><span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.scope}`) }: </span>{ this.option.name }</div>
     } else {
-      return <div><span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.scope}`) }: </span>{ this.option.name }<span className="ml-2 text-color-secondary">{ this.$t('monitor.text_107') + ' : ' + this.option.project_domain }</span></div>
+      return <div><span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.scope}`) }: </span>{ this.option.name }<span className="ml-2 text-color-secondary">{ this.$t('monitor.text_107') + ' : ' + this.option.data.project_domain }</span></div>
     }
   },
 }
@@ -122,7 +122,7 @@ export default {
     async _fetchOptions (params) {
       if (this.showSelect && this.manager) {
         const { data: { data } } = await this.manager.list({ params: params })
-        return data.map((item) => { return { id: item.id, name: item.name, label: item.name } })
+        return data.map((item) => { return { id: item.id, name: item.name, label: item.name, data: item } })
       }
       return []
     },
