@@ -115,15 +115,15 @@ export default {
       region: getRegionFilter(),
       vpc: getVpcFilter(),
       os_arch: getOsArchFilter(),
-      vmem_size: {
-        label: this.$t('table.title.vmem_size'),
-      },
+      // vmem_size: {
+      //   label: this.$t('table.title.vmem_size'),
+      // },
       vcpu_count: {
         label: 'CPU',
       },
-      disk: {
-        label: this.$t('table.title.disk'),
-      },
+      // disk: {
+      //   label: this.$t('table.title.disk'),
+      // },
     }
     this.hiddenFilterOptions.forEach(key => {
       delete filterOptions[key]
@@ -743,6 +743,15 @@ export default {
                         if (!isSame) {
                           ret.validate = false
                           ret.tooltip = this.$t('compute.vminstance.setup_ssh_authentication.group_action.project')
+                          return ret
+                        }
+
+                        const isLinux = this.list.selectedItems.every((item) => {
+                          return item.os_type && item.os_type.toLowerCase() === 'linux'
+                        })
+                        if (!isLinux) {
+                          ret.validate = false
+                          ret.tooltip = this.$t('compute.text_362')
                           return ret
                         }
                       }
