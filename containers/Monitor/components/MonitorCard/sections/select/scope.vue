@@ -22,7 +22,7 @@
             :loading="loading">
           <template v-for="option of options">
             <a-select-option :key="option.id" :value="option.id" :label="option.label">
-              <scope-option :scope="scope" :option="option" />
+              <scope-option :scope="select.scope" :option="option" />
             </a-select-option>
           </template>
         </a-select>
@@ -48,11 +48,11 @@ export const ScopeOption = {
   },
   render (createElement, context) {
     if (this.scope === 'system') {
-      return <div><span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.select.scope}`) }: </span>{ this.option.name + '==system==' }</div>
+      return <div><span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.scope}`) }: </span>{ this.option.name + '==system==' }</div>
     } else if (this.scope === 'domain') {
-      return <div><span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.select.scope}`) }: </span>{ this.option.name + '==domain==' }</div>
+      return <div><span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.scope}`) }: </span>{ this.option.name + '==domain==' }</div>
     } else {
-      return <div><span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.select.scope}`) }: </span>{ this.option.name + '==project==' }</div>
+      return <div><span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.scope}`) }: </span>{ this.option.name + '==project==' }</div>
     }
   },
 }
