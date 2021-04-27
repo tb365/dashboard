@@ -95,11 +95,11 @@ export default {
     },
     optionLabelFormatter (item) {
       if (this.scopeLevel === 2) {
-        return [<span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.select.scope}`) }: </span>, item.name]
+        return [<span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.select.scope}`) }: </span>, item.name, '==system==']
       } else if (this.scopeLevel === 1) {
-        return [<span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.select.scope}`) }: </span>, item.name]
+        return [<span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.select.scope}`) }: </span>, item.name, '==domain==']
       } else {
-        return [<span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.select.scope}`) }: </span>, item.name]
+        return [<span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.select.scope}`) }: </span>, item.name, '==project==']
       }
     },
     async _fetchOptions (params) {
