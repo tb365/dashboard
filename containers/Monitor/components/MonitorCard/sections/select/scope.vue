@@ -52,7 +52,8 @@ export const ScopeOption = {
     } else if (this.scope === 'domain') {
       return <div><span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.scope}`) }: </span>{ this.option.name }</div>
     } else {
-      return <div><span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.scope}`) }: </span>{ this.option.name }<span className="ml-2 text-color-secondary">{ this.$t('monitor.text_107') + ' : ' + this.option.data.project_domain }</span></div>
+      const extraText = this.option.data && this.option.data.project_domain ? this.$t('monitor.text_107') + ' : ' + this.option.data.project_domain : ''
+      return <div><span class="text-color-secondary option-prefix">{ this.$t(`dictionary.${this.scope}`) }: </span>{ this.option.name }<span className="ml-2 text-color-secondary">{ extraText }</span></div>
     }
   },
 }
