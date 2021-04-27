@@ -22,7 +22,7 @@
             :loading="loading">
           <template v-for="option of options">
             <a-select-option :key="option.id" :value="option.id" :label="option.label">
-              <scope-option :scope="this.scope" :option="option" />
+              <scope-option :scope="scope" :option="option" />
             </a-select-option>
           </template>
         </a-select>
