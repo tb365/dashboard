@@ -812,7 +812,7 @@
   "network.snat.type.network": "IP Subnets",
   "network.snat.type.server": "Server",
   "network.ssh-proxy.title": "SSH Proxy",
-  "network.ssh-proxy.endpoints": "Proxy Endpoint",
+  "network.ssh-proxy.endpoints": "SSH Proxy Endpoint",
   "network.ssh-proxy.endpoints.list.tips": "The SSH agent node is used to establish a communication tunnel between the platform and the VPC network, realize the platform's management of resources in the VPC, install monitoring agents, and collect monitoring data.",
   "network.ssh-proxy.endpoints.create": "Create SSH Proxy Endpoint",
   "network.ssh-proxy.endpoints.create.vminstance.tips": "Please refer to the specific configuration of the virtual machine",
