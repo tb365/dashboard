@@ -180,6 +180,7 @@ export default {
           return
         }
         this.setCurrentTab(null)
+        console.log('==========maps==========', maps)
         // 组装成数组
         const paramsList = Object.values(maps).filter(val => {
           console.log(val)
