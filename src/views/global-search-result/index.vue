@@ -182,6 +182,7 @@ export default {
         this.setCurrentTab(null)
         // 组装成数组
         const paramsList = Object.values(maps).filter(val => {
+          console.log('==========================hidden,   ', this.$isScopedPolicyMenuHidden(`sub_hidden_menus.${val.res_name}`))
           return val.hasPermission && !this.$isScopedPolicyMenuHidden(`sub_hidden_menus.${val.res_name}`)
         }).map(val => ({
           ...val,
