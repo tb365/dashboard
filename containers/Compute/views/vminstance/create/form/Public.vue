@@ -85,6 +85,7 @@
           :types="osSelectTypes"
           :hypervisor="hypervisor"
           :decorator="decorators.imageOS"
+          :os-arch="osArch"
           :imageParams="imageParams"
           :cacheImageParams="cacheImageParams"
           :cloudproviderParamsExtra="cloudproviderParamsExtra"
@@ -212,6 +213,13 @@ export default {
     isArm () {
       return this.form.fd.sku && this.form.fd.sku.cpu_arch === HOST_CPU_ARCHS.arm.capabilityKey
     },
+    osArch () {
+      if (this.form.fd.sku && this.form.fd.sku.cpu_arch) {
+        return this.form.fd.sku.cpu_arch
+      } else {
+        return ''
+      }
+    },
     showAreaSelect () {
       if (this.$store.getters.isAdminMode && this.$store.getters.l3PermissionEnable) {
         if (this.form.fd.domain && this.form.fd.domain.key) {
@@ -273,8 +281,6 @@ export default {
         if (this.cloudregionZoneParams.cloudregion) {
           params.cloudregion_id = this.cloudregionZoneParams.cloudregion
         }
-        params.os_arch = HOST_CPU_ARCHS.x86.key
-        if (this.isArm) params.os_arch = HOST_CPU_ARCHS.arm.key
       }
       if (!params.cloudregion_id) return {}
       return params
