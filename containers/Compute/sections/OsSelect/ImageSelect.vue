@@ -261,6 +261,10 @@ export default {
         this.getImagesInfo()
       }
     },
+    osType (val, oldVal) {
+      if (R.equals(val, oldVal)) return
+      this.getImagesInfo()
+    },
   },
   created () {
     this.imagesM = new Manager('images', 'v1')
