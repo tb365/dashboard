@@ -479,7 +479,7 @@ export default {
         if (this.osArch) {
           images = images.filter((image) => {
             const arch = _.get(image, 'info.properties.os_arch', '')
-            if (arch === this.osArch || arch.contains(this.osArch)) {
+            if (arch === this.osArch || arch.indexOf(this.osArch) >= 0) {
               return true
             }
             return false
