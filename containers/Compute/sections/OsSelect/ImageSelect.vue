@@ -261,7 +261,7 @@ export default {
         this.getImagesInfo()
       }
     },
-    osType (val, oldVal) {
+    osArch (val, oldVal) {
       if (R.equals(val, oldVal)) return
       this.getImagesInfo()
     },
