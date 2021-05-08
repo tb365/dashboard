@@ -370,7 +370,13 @@ export default {
     {
       meta: {
         label: i18n.t('network.ssh-proxy.title'),
-        hidden: () => (store.getters.isProjectMode || !hasSetupKey('private', 'vmware', 'public', 'onestack')),
+        hidden: () => {
+          const a = store.getters.isProjectMode
+          debugger
+          const b = !hasSetupKey('private', 'vmware', 'public', 'onestack')
+          debugger
+          return a || b
+        },
       },
       submenus: [
         {
