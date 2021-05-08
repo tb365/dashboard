@@ -405,7 +405,7 @@ export default {
             label: i18n.t('network.ssh-proxy.proxyservice'),
             permission: 'sshproxy_service_list',
             hidden: () => {
-              if (isScopedPolicyMenuHidden('sub_hidden_menus.ssh_proxy')) {
+              if (isScopedPolicyMenuHidden('sub_hidden_menus.ssh-agent')) {
                 return true
               }
               return store.getters.isDomainMode || !hasSetupKey('private', 'vmware', 'public', 'onestack')
