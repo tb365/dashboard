@@ -12,6 +12,7 @@ import SingleActionsMixin from '../mixins/singleActions'
 import WindowsMixin from '@/mixins/windows'
 import ListMixin from '@/mixins/list'
 import expectStatus from '@/constants/expectStatus'
+import { getRegionFilter } from '@/utils/common/tableFilter'
 
 export default {
   name: 'CloudproviderregionList',
@@ -36,14 +37,7 @@ export default {
         },
         idKey: 'cloudregion_id',
         filterOptions: {
-          cloudregion: {
-            label: this.$t('cloudenv.text_95'),
-            filter: true,
-            jointFilter: true,
-            formatter: val => {
-              return `cloudregions.id(cloudregion_id).name.contains('${val}')`
-            },
-          },
+          cloudregion: getRegionFilter(),
         },
         itemGet: (data, params) => {
           const getParams = Object.assign({}, params)
