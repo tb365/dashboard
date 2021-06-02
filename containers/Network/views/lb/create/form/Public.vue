@@ -121,6 +121,28 @@ export default {
       return params
     },
   },
+  watch: {
+    'form.fd' () {
+      const priceKeys = []
+      const { region_ext_id, provider, instance_type, loadbalancer_spec } = this.form.fd
+      switch (this.form.fd.provider) {
+        case 'Aliyun':
+        case 'Aliyun-fin':
+          priceKeys.push(`${provider.toLowercase()}::${region_ext_id}::::elb::${loadbalancer_spec}`)
+          break
+        case 'Aws-int':
+        case 'Aws':
+          priceKeys.push(`${provider.toLowercase()}::${region_ext_id}::::elb::${instance_type}`)
+          break
+        case 'qcloud':
+          priceKeys.push(`${provider.toLowercase()}::${region_ext_id}::::elb::${instance_type}`)
+          break
+        default:
+          break
+      }
+      this.$emit('priceKeys', priceKeys)
+    },
+  },
   methods: {
     vpcLabelFormat (item) {
       if (item.manager) {

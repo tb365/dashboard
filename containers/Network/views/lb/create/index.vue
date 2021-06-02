@@ -2,7 +2,7 @@
   <div>
     <page-header :title="headerTitle" :tabs="cloudEnvOptions" :current-tab.sync="cloudEnv" />
     <page-body>
-      <component :is="component" :type="type" ref="formRef" />
+      <component :is="component" :type="type" ref="formRef" @priceKeys="updtePriceKeys" />
     </page-body>
     <page-footer>
       <template v-slot:right>
@@ -58,6 +58,7 @@ export default {
       cloudEnvOptions,
       cloudEnv,
       routerQuery,
+      priceKeys: [],
       pricesList: [],
     }
   },
@@ -136,6 +137,9 @@ export default {
         this.$router.push({ path, query: newQuery })
       })
     },
+    priceKeys () {
+      this.getPrice()
+    },
   },
   created () {
     if (this.routerQuery !== this.$route.query.type) {
@@ -151,6 +155,9 @@ export default {
     window.removeEventListener('popstate', this.popstate)
   },
   methods: {
+    updtePriceKeys (keys) {
+      this.priceKeys = keys
+    },
     getQuery (query) {
       if (query.sence === 'image') {
         return { type: query.type }
