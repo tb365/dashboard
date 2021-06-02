@@ -6,6 +6,21 @@
     </page-body>
     <page-footer>
       <template v-slot:right>
+        <div v-if="type==='public'" class="mr-4 d-flex align-items-center">
+          <div class="text-truncate">{{$t('compute.text_286')}}</div>
+          <div class="ml-2 prices">
+            <div class="hour error-color d-flex">
+              <template v-if="price">
+                <m-animated-number :value="price" :formatValue="formatToPrice" />
+                <discount-price class="ml-2 mini-text" :discount="priceData.discount" :origin="originPrice" />
+              </template>
+              <template v-else>---</template>
+            </div>
+            <div class="tips text-truncate">
+              <span v-html="priceTips" />
+            </div>
+          </div>
+        </div>
         <a-button type="primary" class="mr-2" @click="submit" :loading="loading">{{ $t('common.create') }}</a-button>
         <a-button @click="cancel">{{$t('network.text_31')}}</a-button>
       </template>
@@ -14,9 +29,12 @@
 </template>
 
 <script>
+import _ from 'lodash'
+import * as R from 'ramda'
 import IDC from './form/IDC'
 import Public from './form/Public'
 import Private from './form/Private'
+import { numerify } from '@/filters'
 import { getCloudEnvOptions } from '@/utils/common/hypervisor'
 
 export default {
@@ -40,6 +58,7 @@ export default {
       cloudEnvOptions,
       cloudEnv,
       routerQuery,
+      pricesList: [],
     }
   },
   computed: {
@@ -68,6 +87,43 @@ export default {
     headerTitle () {
       const res = this.$t('network.text_137')
       return this.$t('compute.text_1161', [res])
+    },
+    formatToPrice (val) {
+      let unit = this.$t('network.unit.hour')
+      const price = numerify(val, '0,0.00')
+      if (this.isPackage) {
+        unit = this.$t('network.unit.month')
+      }
+      return `${this.currency} ${price}/${unit}`
+    },
+    price () {
+      const count = this.count
+      if (count && this.pricesList && this.pricesList.length > 0) {
+        const { month_price: month, sum_price: sum } = this.pricesList[0]
+        let _price = parseFloat(sum)
+        if (this.isPackage && this.durationNum) {
+          _price = parseFloat(month) * this.durationNum
+        }
+        return _price * parseFloat(count)
+      }
+      return null
+    },
+    priceData () {
+      const data = _.get(this.pricesList, '[0]', { discount: 1 })
+      return data
+    },
+    originPrice () {
+      if (this.pricesList && this.pricesList.length > 0) {
+        const { month_gross_price: month, hour_gross_price: sum } = this.pricesList[0]
+        let _price = parseFloat(sum)
+        if (this.isPackage && this.durationNum) {
+          _price = parseFloat(month) * this.durationNum
+        }
+
+        return _price
+      }
+
+      return null
     },
   },
   watch: {
@@ -100,6 +156,18 @@ export default {
         return { type: query.type }
       }
       return query
+    },
+    async getPrice () {
+      try {
+        if (!this.hasMeterService) return // 如果没有 meter 服务则取消调用
+        const fd = await this.$refs.formRef.submit()
+        if (R.isEmpty(fd.sku) || R.isNil(fd.sku)) return
+        const params = {}
+        const { data: { data = [] } } = await new this.$Manager('price_infos', 'v1').get({ id: '', params })
+        this.pricesList = data
+      } catch (error) {
+        throw error
+      }
     },
     async submit () {
       this.loading = true
